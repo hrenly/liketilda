@@ -2,20 +2,22 @@
     <div>
         <div class="controls">
             <div class="controls__wrap">
-                <div @click="action('up')" class="controls__item up"></div>
-                <div @click="action('down')" class="controls__item down"></div>
-                <div
-                    @click="action('remove')"
-                    class="controls__item remove"
-                ></div>
+                <div @click="action('up')" class="controls__item up">
+                    &#5121;
+                </div>
+                <div @click="action('down')" class="controls__item down">
+                    &#5123;
+                </div>
+                <div @click="action('remove')" class="controls__item remove">
+                    &#7413;
+                </div>
             </div>
         </div>
-        <component :is="item.type" />
+        <component :is="item.type" :data="item.data" @changed="change" />
     </div>
 </template>
 
 <script>
-// import { ref } from 'vue';
 import * as blocks from '@/components/blocks';
 
 let comps = {};
@@ -33,7 +35,11 @@ export default {
     },
     setup(props, { emit }) {
         const action = type => emit(type, props.item.id);
-        return { action };
+        const change = data => {
+            emit('update', { id: props.item.id, data });
+        };
+
+        return { action, change };
     }
 };
 </script>
@@ -49,10 +55,15 @@ export default {
         display inline-block
         width 20px
         height 20px
+        font-size 14px
+        text-align center
+        line-height 20px
+        vertical-align top
+        color white
     .remove
         background-color red
+        font-size 20px
     .up
-        background-color blue
     .down
-        background-color green
+        background-color blue
 </style>
